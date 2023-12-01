@@ -1,4 +1,4 @@
-# Dockerized Skeleton for PHP projects
+# Symfony Skeleton
 
 ---
 
@@ -8,12 +8,20 @@
 $ make setup
 ```
 
+> It will run docker build and copy example env into .env
+
 ---
 
 ### Run
 
 ```shell
 $ make up
+```
+
+Background run
+
+```shell
+$ make up-d
 ```
 
 ### Stop
@@ -28,6 +36,14 @@ $ make down
 
 ```shell
 $ make app
+```
+
+---
+
+#### Docker rebuild
+
+```shell
+$ make build
 ```
 
 ---
