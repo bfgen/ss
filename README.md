@@ -8,7 +8,10 @@
 $ make setup
 ```
 
-> It will run docker build and copy example env into .env
+> It will copy example env into .env,
+> run docker build,
+> up containers in background
+> and run composer install
 
 ---
 
@@ -44,6 +47,14 @@ $ make app
 
 ```shell
 $ make build
+```
+
+---
+
+#### Composer install
+
+```shell
+$ make vendor
 ```
 
 ---
