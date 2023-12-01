@@ -1,4 +1,4 @@
-setup: env build
+setup: env build up-d vendor
 
 build:
 	docker compose build
@@ -17,3 +17,6 @@ down:
 
 app:
 	docker compose exec app bash
+
+vendor:
+	docker compose exec app composer install
