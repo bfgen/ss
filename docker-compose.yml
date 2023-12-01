@@ -1,0 +1,63 @@
+version: '3.5'
+
+volumes:
+  dbv:
+    driver: local
+
+networks:
+  tmp:
+    driver: bridge
+
+services:
+  web:
+    image: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "${WEB_PORT:-80}:80"
+    volumes:
+      - ./src/app/:/var/www/app
+      - ./docker/web/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+      - db
+    networks:
+      - tmp
+
+  db:
+    image: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - dbv:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - tmp
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    image: php
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/app
+    environment:
+      DB_HOST: db
+      DB_DATABASE: app
+      DB_USERNAME: user
+      DB_PASSWORD: user
+    volumes:
+      - ./src/app/:/var/www/app
+    ports:
+      - "${APP_PORT:-9000}:9000"
+    networks:
+      - tmp
